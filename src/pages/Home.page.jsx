@@ -16,13 +16,43 @@ const HomePage = () => {
   useEffect(() =>{
     const requestTopRatedMovies=async()=>{
        const getTopRatedMovies=await axios.get(
-        'https://api.themoviedb.org/3/movie/top_rated?api_key=0931d99ee9a97cf63bc8bdb451859024');
+        "/movie/popular");
         setRecommendedMovies(getTopRatedMovies.data.results);
 
     };
 
     requestTopRatedMovies();
   },[])
+
+
+  useEffect(() =>{
+    const requestPopularMovies=async()=>{
+       const getPopularMovies=await axios.get(
+        "/movie/top_rated");
+        setPremierMovies(getPopularMovies.data.results);
+
+    };
+
+    requestPopularMovies();
+  },[])
+
+
+
+
+  useEffect(() =>{
+    const requestUpcomingMovies=async()=>{
+       const getUpcomingMovies=await axios.get(
+        "/movie/upcoming");
+        setOnLineStreamEvents(getUpcomingMovies.data.results);
+
+    };
+
+    requestUpcomingMovies();
+  },[])
+
+
+
+
   return (
     <>
     <HeroCarousel />
