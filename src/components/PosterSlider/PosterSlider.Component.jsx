@@ -4,7 +4,7 @@ import Poster from '../Poster/Poster.Component';
 
 const PosterSlider = (props) => {
 
-   const{posters,title,subtitle,isDark}=props;
+   const{posters,title,subtitle,isDark,config}=props;
 
    const settings={
     infinite:false,
@@ -59,14 +59,23 @@ const PosterSlider = (props) => {
 
       </p>
     </div>
-    <Slider {...settings}>
-      {posters.map((each) =>(
-        <Poster {...each} isDark={isDark}/>
-      ))
-      }
-    </Slider>
+   {config &&(
+     <Slider {...config}>
+     {posters.map((each) =>(
+       <Poster {...each} isDark={isDark}/>
+     ))
+     }
+   </Slider>
+   )}
     
-    
+    {!config && (
+       <Slider {...settings}>
+       {posters.map((each) =>(
+         <Poster {...each} isDark={isDark}/>
+       ))
+       }
+     </Slider>
+    )}
     </>
   )
 }
