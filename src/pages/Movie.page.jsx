@@ -1,12 +1,13 @@
 import React, { useEffect, useState,useContext } from 'react'
 import MovieLayoutHoc from '../layout/Movie.layout'
-import {useParams} from "react-router-dom";
+import {useParams} from 'react-router-dom';
 import axios from "axios";
 import { MovieContext } from '../context/Movie.context';
 import Slider from'react-slick';
 import { FaCcVisa,FaCcApplePay}from 'react-icons/fa';
 import PosterSlider from '../components/PosterSlider/PosterSlider.Component';
 import MovieHero from '../components/MovieHero/MovieHeroComponent';
+import Cast from '../components/cast/Cast.Component';
 
 
 
@@ -44,16 +45,20 @@ useEffect(() => {
 },[id])
 
 
-useEffect(() => {
 
-  const requetRecommendedMovies = async() =>{
-   const getRecommendedMovies=await axios.get(`/movie/${id}/recommendations`);
-   setRecommendedMovies(getRecommendedMovies.data.results);
-  };
-  requetRecommendedMovies();
 
-},[id])
+  useEffect(() => {
+    const requestRecommendedMovies = async () => {
+      const getRecommendedMovies = await axios.get(
+        `/movie/${id}/recommendations`
+      );
+      setRecommendedMovies(getRecommendedMovies.data.results);
+    };
 
+    requestRecommendedMovies();
+  }, [id]);
+ 
+ 
 
 useEffect(() =>{
 const requestMovie=async () =>{
@@ -65,7 +70,43 @@ requestMovie();
 
 },[id] )
 
-const settingCast ={};
+const settingsCast ={
+
+  infinite:false,
+  speed:500,
+  slidesToShow:6,
+  slidesToScroll:4,
+  initialSlite:0,
+  responsive:[
+    {
+      breakpoint:1024,
+      settings:{
+        slidesToShow:4,
+        slidesToScroll:4,
+
+      },
+    },
+
+     { breakpoint:600,
+      settings:{
+        slidesToShow:5,
+        slidesToScroll:2,
+        initialSlide:2,
+        
+      },
+    },
+
+      {breakpoint:480,
+      settings:{
+        slidesToShow:2,
+        slidesToScroll:1,
+        
+        
+      },
+    },
+  ],
+
+};
 const settings ={
   infinite:false,
   speed:500,
@@ -80,24 +121,26 @@ const settings ={
         slidesToScroll:3,
 
       },
+    },
 
-      breakpoint:600,
+     { breakpoint:600,
       settings:{
         slidesToShow:2,
         slidesToScroll:2,
         initialSlide:3,
         
       },
+    },
 
-      breakpoint:480,
+      {breakpoint:480,
       settings:{
         slidesToShow:3,
         slidesToScroll:1,
         initialSlide:4,
         
-      }
-    }
-  ]
+      },
+    },
+  ],
 
 };
   
@@ -159,6 +202,18 @@ const settings ={
 
 
       {/* {cast and Creaw Slider} */}
+<div className="my-8">
+  <h2 className="test-gray-800 font-bold text-2xl mb-4"> Cast and Crew</h2>
+  <Slider {...settingsCast}>
+    {cast.map((castData) => (
+    <Cast image={castData.profile_path}  castName={castData.original_name} role={castData.character}/>
+    
+   ) )}
+
+  </Slider>
+
+</div>
+
 
 
       <div className="my-8">
@@ -167,7 +222,7 @@ const settings ={
 
       {/* {{recommendedmovies slider}} */}
       <div className="my-8">
-        <PosterSlider config={settings} title="Recommended Movies"
+        <PosterSlider config ={settings} title="Recommended Movies"
          posters={recommendedMovies}
          isDark={false}/>
       </div>
@@ -175,8 +230,9 @@ const settings ={
       <div className="my-8">
         <hr/>
        </div>
+
        <div className="my-8">
-        <PosterSlider config={settings} title="Recommended Movies"
+        <PosterSlider config={settings} title="BMS Exclusive"
          posters={recommendedMovies}
          isDark={false}/>
       </div>
